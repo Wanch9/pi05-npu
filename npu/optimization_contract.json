@@ -1,0 +1,72 @@
+{
+  "scope": "training acceleration on four NPUs and eight existing cached LIBERO windows",
+  "cards": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "global_batch": 4,
+  "batch_per_rank": 1,
+  "precision": "unchanged mixed BF16 parameters and selected FP32 stability parameters",
+  "model": "pi05 full 3.616B all parameters trainable",
+  "dataset": "/cache/pi05-npu-20261011/libero-eight-v2/samples.pt",
+  "weights": "/cache/pi05-npu-20261011/pi05-base-pytorch/model.safetensors",
+  "diagnosis": {
+    "script_sha256": "f2f3c06c611ba0950bc01cfb18273d972481ed6be1782f76e6ffa232f3ca2621",
+    "run": "diagnose001",
+    "optimizer_updates": 0,
+    "comparisons": "default/deterministic x synchronized/no_sync gradients; baseline, baseline repeat, candidate twice; all active gradient elements",
+    "atol": 1e-07,
+    "rtol": 1e-05,
+    "supervisor_pid": 2600220
+  },
+  "optimizer": "probe actual mixed BF16/FP32 support for NpuFusedAdamW and torch AdamW fused; never silently convert model precision",
+  "buckets_MiB": [
+    25,
+    50,
+    100
+  ],
+  "benchmark": "3 warmup + 8 timed updates per variant; synchronize step boundaries, no profiler in timing; repeat baseline",
+  "no_dataset_download": true,
+  "checkpoint_save": false,
+  "inference": false,
+  "status": "completed",
+  "benchmark_script_sha256": "85112681178b6c987a5168e22f8916e90b63b3bd2fd705ca1d50ed1e01c18e3c",
+  "benchmark_variants": [
+    "baseline25",
+    "layer25",
+    "layer_fused25",
+    "layer50",
+    "layer100",
+    "layer25_repeat",
+    "baseline25_repeat"
+  ],
+  "benchmark_updates": 77,
+  "optimizer_probe_result": {
+    "NpuFusedAdamW": "rejects BF16",
+    "torch.optim.AdamW(fused=True)": "mixed BF16/FP32 step succeeds; PrivateUse1 kernel registered; full training pending"
+  },
+  "prior_attempt": {
+    "run": "diagnose001",
+    "exit_code": 1,
+    "cause": "torch deterministic interpolate decomposition requests unsupported NPU memory format",
+    "completed_evidence": "full-gradient default-HCCL and no_sync comparisons; optimizer support probes"
+  },
+  "diagnosis_revision": "Keep original image augmentation outside deterministic-mode toggle; HCCL_DETERMINISTIC=true in a fresh four-rank process; full gradient comparisons unchanged",
+  "run": "optimize001",
+  "HCCL_DETERMINISTIC": "true",
+  "benchmark_note": "All variants share deterministic HCCL; torch deterministic flag enabled only during numerical diagnosis, disabled for timing",
+  "script_sha256": "787c1df891f76884149bed31c3b8e9ffb61c31f18a7703a0dbc8dacf283e50ce",
+  "exit_code": 0,
+  "supervisor_pid": 2605541,
+  "completed_training_updates_per_rank": 77,
+  "checkpoint_candidate_status": "strict full-gradient checks passed on all four ranks under deterministic HCCL; real updates and repeated timing verified",
+  "default_optimizer": "standard AdamW retained",
+  "default_bucket_MiB": 25,
+  "recommendation": "deterministic HCCL, omit whole-stack checkpoint only, standard AdamW, 25 MiB buckets",
+  "fused_status": "measured speed/memory improvement; parameter and first-moment strict checks failed; experimental",
+  "bucket_status": "50/100 MiB measured; strict gradient checks failed; retain 25 MiB",
+  "cards_released": true,
+  "summary": "npu/optimization_summary.json"
+}

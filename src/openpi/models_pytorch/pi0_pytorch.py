@@ -32,14 +32,19 @@ def create_sinusoidal_pos_embedding(
     if time.ndim != 1:
         raise ValueError("The time tensor is expected to be of shape `(batch_size, )`.")
 
-    dtype = get_safe_dtype(torch.float64, device.type)
-    fraction = torch.linspace(0.0, 1.0, dimension // 2, dtype=dtype, device=device)
+    device = torch.device(device)
+    # Ascend does not implement float64. Preserve the reference computation on
+    # CPU, then apply the same float32 cast used by embed_suffix before transfer.
+    compute_device = torch.device("cpu") if device.type == "npu" else device
+    dtype = get_safe_dtype(torch.float64, compute_device.type)
+    fraction = torch.linspace(0.0, 1.0, dimension // 2, dtype=dtype, device=compute_device)
     period = min_period * (max_period / min_period) ** fraction
 
     # Compute the outer product
     scaling_factor = 1.0 / period * 2 * math.pi
-    sin_input = scaling_factor[None, :] * time[:, None]
-    return torch.cat([torch.sin(sin_input), torch.cos(sin_input)], dim=1)
+    sin_input = scaling_factor[None, :] * time.to(compute_device)[:, None]
+    result = torch.cat([torch.sin(sin_input), torch.cos(sin_input)], dim=1)
+    return result.to(device=device, dtype=time.dtype) if device.type == "npu" else result
 
 
 def sample_beta(alpha, beta, bsize, device):

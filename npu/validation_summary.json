@@ -1,0 +1,337 @@
+{
+  "status": "passed",
+  "scope": "bounded four-card full-parameter fine-tuning feasibility; task success rate not evaluated",
+  "collected_utc": "2026-10-11T11:03:24.841372+00:00",
+  "evidence_file": "npu/evidence/final001.json",
+  "evidence_sha256": "ee7b357e0f143797b16242addc750b0cc267a4457e46076772cc399923775c39",
+  "source_revision": "215abfb217dbac7d5f1273282331b9b1866c0479",
+  "training_snapshot": "source008.tar.gz",
+  "training_code_matches_local": [
+    "examples/convert_jax_model_to_pytorch.py",
+    "npu/convert_base.py",
+    "npu/environment.sh",
+    "npu/prepare_libero.py",
+    "npu/requirements-overlay.txt",
+    "npu/validate_four_cards.py",
+    "scripts/train_pytorch.py",
+    "src/openpi/models_pytorch/device.py",
+    "src/openpi/models_pytorch/gemma_pytorch.py",
+    "src/openpi/models_pytorch/pi0_pytorch.py",
+    "src/openpi/models_pytorch/preprocessing_pytorch.py",
+    "src/openpi/models_pytorch/transformers_replace/models/gemma/configuration_gemma.py",
+    "src/openpi/models_pytorch/transformers_replace/models/gemma/modeling_gemma.py",
+    "src/openpi/models_pytorch/transformers_replace/models/paligemma/modeling_paligemma.py",
+    "src/openpi/models_pytorch/transformers_replace/models/siglip/check.py",
+    "src/openpi/models_pytorch/transformers_replace/models/siglip/modeling_siglip.py"
+  ],
+  "runtime": {
+    "python": "3.11.10 (main, Oct  3 2024, 07:21:51) [GCC 11.2.0]",
+    "executable": "/home/ma-user/pi05-npu-20261011/venv/bin/python",
+    "vision_attention": "sdpa",
+    "versions": {
+      "torch": "2.6.0",
+      "torch-npu": "2.6.0",
+      "transformers": "4.53.2",
+      "jax": "0.5.3",
+      "jaxlib": "0.5.3",
+      "flax": "0.10.2",
+      "orbax-checkpoint": "0.11.13",
+      "numpy": "1.26.4",
+      "safetensors": "0.5.3",
+      "pyarrow": "20.0.0",
+      "av": "15.1.0",
+      "sentencepiece": "0.2.0",
+      "tensorstore": "0.1.74"
+    }
+  },
+  "dataset": {
+    "source": "/cache/fastwam-assets/data/libero/libero_spatial_no_noops_lerobot",
+    "obs_source": "obs://REDACTED/libero_spatial_no_noops_lerobot",
+    "samples": [
+      "libero_spatial/episode_000000/frame_16",
+      "libero_spatial/episode_000001/frame_16",
+      "libero_spatial/episode_000002/frame_16",
+      "libero_spatial/episode_000003/frame_16",
+      "libero_spatial/episode_000004/frame_16",
+      "libero_spatial/episode_000005/frame_16",
+      "libero_spatial/episode_000006/frame_16",
+      "libero_spatial/episode_000007/frame_16"
+    ],
+    "distinct_episodes": 8,
+    "window": 10,
+    "state_dim": 8,
+    "action_dim": 7,
+    "padded_dim": 32,
+    "max_token_len": 200,
+    "normalization": "q01/q99 computed only on these eight training episodes",
+    "discrete_state_input": false,
+    "extra_delta_transform": false,
+    "source_read_only": true,
+    "dataset_downloaded": false
+  },
+  "stage_exit_codes": {
+    "setup001": 0,
+    "probe003": 0,
+    "hccl001": 0,
+    "convert001": 0,
+    "numeric001": 0,
+    "train001": 0,
+    "resume001": 0,
+    "numeric002": 0
+  },
+  "phases": {
+    "train001": {
+      "completed_steps": 1,
+      "losses": [
+        0.1120656430721283,
+        0.15912431478500366,
+        0.1609235405921936,
+        0.14670658111572266
+      ],
+      "mean_loss": 0.14470501989126205,
+      "peak_allocated_GiB": 32.744399070739746,
+      "max_update_seconds": 16.906036518514156,
+      "checkpoint": {
+        "completed_steps": 1,
+        "path": "/cache/pi05-npu-20261011/train001/checkpoint.pt",
+        "bytes": 22000460514
+      },
+      "rank_pids": [
+        2567258,
+        2567259,
+        2567260,
+        2567261
+      ],
+      "source_manifest_sha256": "3d893f7c25705428d3ac38f669def0b72081c3398d6b7f40a3c2446386214893",
+      "parameters_with_grad": 805,
+      "sampled_parameter_changes": {
+        "action_out_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 4096,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.23647135496139526,
+          "nonzero": 32768
+        },
+        "time_mlp_in.weight": {
+          "sampled_elements": 4096,
+          "changed": 4096,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.05475223436951637,
+          "nonzero": 1048576
+        },
+        "paligemma_with_expert.gemma_expert.model.layers.0.input_layernorm.dense.weight": {
+          "sampled_elements": 4096,
+          "changed": 3912,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.02202317677438259,
+          "nonzero": 3145728
+        },
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 0,
+          "max_abs": 0.0,
+          "norm": 0.0019551857840269804,
+          "nonzero": 2095941
+        },
+        "paligemma_with_expert.paligemma.model.language_model.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 1,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.022900940850377083,
+          "nonzero": 4191778
+        },
+        "paligemma_with_expert.paligemma.model.language_model.layers.0.input_layernorm.weight": {
+          "sampled_elements": 2048,
+          "changed": 71,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.007558147888630629,
+          "nonzero": 2048
+        },
+        "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 0,
+          "max_abs": 0.0,
+          "norm": 0.0035405142698436975,
+          "nonzero": 1325992
+        },
+        "paligemma_with_expert.paligemma.model.vision_tower.vision_model.embeddings.patch_embedding.weight": {
+          "sampled_elements": 4096,
+          "changed": 4090,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.14901471138000488,
+          "nonzero": 677376
+        }
+      }
+    },
+    "resume001": {
+      "completed_steps": 2,
+      "losses": [
+        0.12018851935863495,
+        0.16362473368644714,
+        0.11654841899871826,
+        0.09579257667064667
+      ],
+      "mean_loss": 0.12403856217861176,
+      "peak_allocated_GiB": 32.744399070739746,
+      "max_update_seconds": 16.588757127523422,
+      "checkpoint": {
+        "completed_steps": 2,
+        "path": "/cache/pi05-npu-20261011/resume001/checkpoint.pt",
+        "bytes": 22000460514
+      },
+      "rank_pids": [
+        2571748,
+        2571749,
+        2571750,
+        2571751
+      ],
+      "source_manifest_sha256": "3d893f7c25705428d3ac38f669def0b72081c3398d6b7f40a3c2446386214893",
+      "parameters_with_grad": 805,
+      "sampled_parameter_changes": {
+        "action_out_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 4013,
+          "max_abs": 1.1175870895385742e-08,
+          "norm": 0.2254696935415268,
+          "nonzero": 32768
+        },
+        "time_mlp_in.weight": {
+          "sampled_elements": 4096,
+          "changed": 3847,
+          "max_abs": 1.1175870895385742e-08,
+          "norm": 0.046291254460811615,
+          "nonzero": 1048576
+        },
+        "paligemma_with_expert.gemma_expert.model.layers.0.input_layernorm.dense.weight": {
+          "sampled_elements": 4096,
+          "changed": 3817,
+          "max_abs": 1.1175870895385742e-08,
+          "norm": 0.012616402469575405,
+          "nonzero": 3145728
+        },
+        "paligemma_with_expert.gemma_expert.model.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 0,
+          "max_abs": 0.0,
+          "norm": 0.0016039523761719465,
+          "nonzero": 2095818
+        },
+        "paligemma_with_expert.paligemma.model.language_model.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 1,
+          "max_abs": 7.450580596923828e-09,
+          "norm": 0.03363301604986191,
+          "nonzero": 4192543
+        },
+        "paligemma_with_expert.paligemma.model.language_model.layers.0.input_layernorm.weight": {
+          "sampled_elements": 2048,
+          "changed": 102,
+          "max_abs": 1.4901161193847656e-08,
+          "norm": 0.020997721701860428,
+          "nonzero": 2048
+        },
+        "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.q_proj.weight": {
+          "sampled_elements": 4096,
+          "changed": 0,
+          "max_abs": 0.0,
+          "norm": 0.003283672733232379,
+          "nonzero": 1326035
+        },
+        "paligemma_with_expert.paligemma.model.vision_tower.vision_model.embeddings.patch_embedding.weight": {
+          "sampled_elements": 4096,
+          "changed": 3853,
+          "max_abs": 1.1175870895385742e-08,
+          "norm": 0.11232810467481613,
+          "nonzero": 677376
+        }
+      }
+    }
+  },
+  "inference": [
+    {
+      "shape": [
+        1,
+        10,
+        32
+      ],
+      "finite": true,
+      "steps": 10,
+      "abs_max": 0.8714300394058228
+    },
+    {
+      "shape": [
+        1,
+        10,
+        32
+      ],
+      "finite": true,
+      "steps": 10,
+      "abs_max": 1.27215576171875
+    },
+    {
+      "shape": [
+        1,
+        10,
+        32
+      ],
+      "finite": true,
+      "steps": 10,
+      "abs_max": 0.9674487709999084
+    },
+    {
+      "shape": [
+        1,
+        10,
+        32
+      ],
+      "finite": true,
+      "steps": 10,
+      "abs_max": 0.980724573135376
+    }
+  ],
+  "numerical": {
+    "samples": [
+      "libero_spatial/episode_000000/frame_16"
+    ],
+    "views": [
+      "base_0_rgb",
+      "left_wrist_0_rgb"
+    ],
+    "batch_per_encoder_call": 1,
+    "sinusoidal_fp32_exact": true,
+    "weights": "/cache/pi05-npu-20261011/pi05-base-pytorch/model.safetensors",
+    "reference": "CPU FP32 SDPA; identical real preprocessed images",
+    "attention_implementation": "sdpa",
+    "statistics_dtype": "CPU float64",
+    "npu_fp32": {
+      "finite": true,
+      "max_abs": 0.08836841583251953,
+      "mean_abs": 0.000434613893254411,
+      "rmse": 0.0007325080799875412,
+      "reference_rms": 1.1846546743063229,
+      "relative_l2": 0.0006183304686797487,
+      "cosine": 0.9999998089383016
+    },
+    "npu_selected_bf16": {
+      "finite": true,
+      "max_abs": 3.682048797607422,
+      "mean_abs": 0.01770945144163623,
+      "rmse": 0.02746022967640627,
+      "reference_rms": 1.1846546743063229,
+      "relative_l2": 0.02317994456272422,
+      "cosine": 0.999731361890763
+    }
+  },
+  "npu_0_to_3_released": true,
+  "binary_artifact_bytes": {
+    "/cache/pi05-npu-20261011/pi05-base-pytorch/model.safetensors": 14467165872,
+    "/cache/pi05-npu-20261011/resume001/checkpoint.pt": 22000460514,
+    "/cache/pi05-npu-20261011/resume001/rank-0-actions.pt": 2495,
+    "/cache/pi05-npu-20261011/resume001/rank-1-actions.pt": 2495,
+    "/cache/pi05-npu-20261011/resume001/rank-2-actions.pt": 2495,
+    "/cache/pi05-npu-20261011/resume001/rank-3-actions.pt": 2495,
+    "/cache/pi05-npu-20261011/train001/checkpoint.pt": 22000460514
+  },
+  "original_evidence_sha256": "d6877752a603b924dcf1dcb6e627ecd172ebd48741fc06e12c6470c7c08691d3",
+  "publication_note": "Redacted evidence; training_code_matches_local records the original workspace, not portable publication edits. See PUBLICATION.md."
+}

@@ -1,0 +1,1463 @@
+{
+  "status": "profile_complete",
+  "result": {
+    "status": "exited",
+    "supervisor_pid": 2589434,
+    "started_utc": "2026-10-11T11:19:32.691211+00:00",
+    "command_sha256": "cb946e9607e05a681a0a78f76f235dec12507f69c7eea0b10c1f1d3131af6ee1",
+    "exit_code": 0,
+    "child_pid": 2589435,
+    "process_group_id": 2589435,
+    "finished_utc": "2026-10-11T11:26:42.050870+00:00",
+    "requested_signal": null
+  },
+  "evidence_sha256": "125cd68083a6117038ac93802d00bb45ef943161661bcb6360435f7eaffc30d7",
+  "aggregation": "per-step maximum duration across four ranks, then median; no outliers removed",
+  "blocks": {
+    "baseline": {
+      "slowest_rank_seconds_per_step": [
+        1.3078354522585869,
+        1.3210874125361443,
+        2.129171170294285,
+        1.316667079925537,
+        1.3249072954058647
+      ],
+      "median_seconds": 1.3210874125361443,
+      "mean_seconds": 1.4799336820840836,
+      "min_seconds": 1.3078354522585869,
+      "max_seconds": 2.129171170294285,
+      "global_samples_per_second_at_median": 3.0278087294171097,
+      "peak_allocated_GiB": 32.745949268341064
+    },
+    "layer_checkpoint_only": {
+      "slowest_rank_seconds_per_step": [
+        1.170279748737812,
+        1.1652001664042473,
+        1.1740831956267357,
+        1.168991893529892,
+        1.1702343299984932
+      ],
+      "median_seconds": 1.1702343299984932,
+      "mean_seconds": 1.169757866859436,
+      "min_seconds": 1.1652001664042473,
+      "max_seconds": 1.1740831956267357,
+      "global_samples_per_second_at_median": 3.418118830956831,
+      "peak_allocated_GiB": 32.745949268341064
+    },
+    "baseline_repeat": {
+      "slowest_rank_seconds_per_step": [
+        1.3149612247943878,
+        1.3435110971331596,
+        1.312170833349228
+      ],
+      "median_seconds": 1.3149612247943878,
+      "mean_seconds": 1.3235477184255917,
+      "min_seconds": 1.312170833349228,
+      "max_seconds": 1.3435110971331596,
+      "global_samples_per_second_at_median": 3.04191479153726,
+      "peak_allocated_GiB": 32.745949268341064
+    },
+    "validation_overhead": {
+      "slowest_rank_seconds_per_step": [
+        1.5375816524028778,
+        1.4326386824250221
+      ],
+      "median_seconds": 1.48511016741395,
+      "mean_seconds": 1.48511016741395,
+      "min_seconds": 1.4326386824250221,
+      "max_seconds": 1.5375816524028778,
+      "global_samples_per_second_at_median": 2.693402878633088,
+      "peak_allocated_GiB": 32.7460675239563
+    }
+  },
+  "breakdown": {
+    "baseline_breakdown": {
+      "seconds_max_rank": 1.3239244222640991,
+      "stage_seconds_median_across_ranks": {
+        "input": 0.0012727901339530945,
+        "forward": 0.29142478108406067,
+        "backward_hccl": 0.8211703635752201,
+        "clip": 0.06124810501933098,
+        "optimizer": 0.141239482909441
+      }
+    },
+    "candidate_breakdown": {
+      "seconds_max_rank": 1.788744330406189,
+      "stage_seconds_median_across_ranks": {
+        "input": 0.0012073926627635956,
+        "forward": 0.2983701154589653,
+        "backward_hccl": 1.280381791293621,
+        "clip": 0.0624162033200264,
+        "optimizer": 0.14181631058454514
+      }
+    },
+    "audit_breakdown": {
+      "seconds_max_rank": 1.4549843072891235,
+      "stage_seconds_median_across_ranks": {
+        "input": 0.0012209899723529816,
+        "forward": 0.2961939610540867,
+        "backward_hccl": 0.8280108198523521,
+        "gradient_audit": 0.05013071745634079,
+        "clip": 0.05990857630968094,
+        "optimizer": 0.1408444195985794,
+        "moment_parameter_audit": 0.07421573624014854
+      }
+    }
+  },
+  "candidate_step_time_reduction_fraction": 0.11418857004174487,
+  "candidate_throughput_increase_fraction": 0.12890844053245765,
+  "numerical_comparisons": [
+    {
+      "candidate": {
+        "loss_reference": 0.1120656430721283,
+        "loss_candidate": 0.1120656430721283,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 6.103515625e-05,
+        "gradient_sample_relative_l2": 0.000743222209994437,
+        "all_gradient_tensor_norm_max_abs": 6.034970283508301e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 6.103515625e-05,
+            "gradient_norm_abs_diff": 1.2323260307312012e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 6.876885890960693e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.0263174772262573e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5692785382270813e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.18.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.300366759300232e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 4.500150680541992e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.8.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.4646520614624023e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.971609890460968e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm2.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.6335397958755493e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.377216100692749e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.2293457984924316e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.7008354663848877e-07
+          }
+        ]
+      },
+      "reference_repeat": {
+        "loss_reference": 0.1120656430721283,
+        "loss_candidate": 0.1120656430721283,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 1.52587890625e-05,
+        "gradient_sample_relative_l2": 0.0004776585632910426,
+        "all_gradient_tensor_norm_max_abs": 5.48316165804863e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 2.123415470123291e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.5266781449317932e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 9.639188647270203e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.1725351214408875e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5459954738616943e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.564621925354004e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.618172973394394e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.6938657760620117e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.1457672119140625e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.5.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 8.25151801109314e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.7173588275909424e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.825392246246338e-07
+          }
+        ]
+      },
+      "candidate_accepted_by_strict_check": false
+    },
+    {
+      "candidate": {
+        "loss_reference": 0.15912431478500366,
+        "loss_candidate": 0.15912431478500366,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 6.103515625e-05,
+        "gradient_sample_relative_l2": 0.000743222209994437,
+        "all_gradient_tensor_norm_max_abs": 6.034970283508301e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 6.103515625e-05,
+            "gradient_norm_abs_diff": 1.2323260307312012e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 6.876885890960693e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.0263174772262573e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5692785382270813e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.18.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.300366759300232e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 4.500150680541992e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.8.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.4646520614624023e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.971609890460968e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm2.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.6335397958755493e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.377216100692749e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.2293457984924316e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.7008354663848877e-07
+          }
+        ]
+      },
+      "reference_repeat": {
+        "loss_reference": 0.15912431478500366,
+        "loss_candidate": 0.15912431478500366,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 1.52587890625e-05,
+        "gradient_sample_relative_l2": 0.0004776585632910426,
+        "all_gradient_tensor_norm_max_abs": 5.48316165804863e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 2.123415470123291e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.5266781449317932e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 9.639188647270203e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.1725351214408875e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5459954738616943e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.564621925354004e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.618172973394394e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.6938657760620117e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.1457672119140625e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.5.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 8.25151801109314e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.7173588275909424e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.825392246246338e-07
+          }
+        ]
+      },
+      "candidate_accepted_by_strict_check": false
+    },
+    {
+      "candidate": {
+        "loss_reference": 0.1609235405921936,
+        "loss_candidate": 0.1609235405921936,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 6.103515625e-05,
+        "gradient_sample_relative_l2": 0.000743222209994437,
+        "all_gradient_tensor_norm_max_abs": 6.034970283508301e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 6.103515625e-05,
+            "gradient_norm_abs_diff": 1.2323260307312012e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 6.876885890960693e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.0263174772262573e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5692785382270813e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.18.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.300366759300232e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 4.500150680541992e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.8.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.4646520614624023e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.971609890460968e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm2.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.6335397958755493e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.377216100692749e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.2293457984924316e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.7008354663848877e-07
+          }
+        ]
+      },
+      "reference_repeat": {
+        "loss_reference": 0.1609235405921936,
+        "loss_candidate": 0.1609235405921936,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 1.52587890625e-05,
+        "gradient_sample_relative_l2": 0.0004776585632910426,
+        "all_gradient_tensor_norm_max_abs": 5.48316165804863e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 2.123415470123291e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.5266781449317932e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 9.639188647270203e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.1725351214408875e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5459954738616943e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.564621925354004e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.618172973394394e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.6938657760620117e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.1457672119140625e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.5.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 8.25151801109314e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.7173588275909424e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.825392246246338e-07
+          }
+        ]
+      },
+      "candidate_accepted_by_strict_check": false
+    },
+    {
+      "candidate": {
+        "loss_reference": 0.14670658111572266,
+        "loss_candidate": 0.14670658111572266,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 6.103515625e-05,
+        "gradient_sample_relative_l2": 0.000743222209994437,
+        "all_gradient_tensor_norm_max_abs": 6.034970283508301e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 6.103515625e-05,
+            "gradient_norm_abs_diff": 1.2323260307312012e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 6.876885890960693e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.0263174772262573e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5692785382270813e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.18.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.300366759300232e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 4.500150680541992e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.8.self_attn.v_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.4646520614624023e-05
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.971609890460968e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm2.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.6335397958755493e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.377216100692749e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.2293457984924316e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.7008354663848877e-07
+          }
+        ]
+      },
+      "reference_repeat": {
+        "loss_reference": 0.14670658111572266,
+        "loss_candidate": 0.14670658111572266,
+        "loss_abs_diff": 0.0,
+        "sampled_gradient_elements": 51488,
+        "gradient_sample_max_abs": 1.52587890625e-05,
+        "gradient_sample_relative_l2": 0.0004776585632910426,
+        "all_gradient_tensor_norm_max_abs": 5.48316165804863e-05,
+        "strict_sample_match": false,
+        "largest_differences": [
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 1.52587890625e-05,
+            "gradient_norm_abs_diff": 2.123415470123291e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 2.5266781449317932e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.1.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 9.639188647270203e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.1725351214408875e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.language_model.layers.5.self_attn.k_proj.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 7.62939453125e-06,
+            "gradient_norm_abs_diff": 1.5459954738616943e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.564621925354004e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.618172973394394e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.weight",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 4.6938657760620117e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.4.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 2.1457672119140625e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.5.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 8.25151801109314e-07
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.layer_norm1.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.7173588275909424e-06
+          },
+          {
+            "name": "paligemma_with_expert.paligemma.model.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.bias",
+            "dtype": "torch.bfloat16",
+            "sample_max_abs": 3.814697265625e-06,
+            "gradient_norm_abs_diff": 1.825392246246338e-07
+          }
+        ]
+      },
+      "candidate_accepted_by_strict_check": false
+    }
+  ],
+  "completion": [
+    {
+      "status": "profile_complete",
+      "candidate_strict_gradient_match": false,
+      "updates": 26,
+      "optimizer_states": 805,
+      "no_checkpoint_written": true,
+      "no_inference": true
+    },
+    {
+      "status": "profile_complete",
+      "candidate_strict_gradient_match": false,
+      "updates": 26,
+      "optimizer_states": 805,
+      "no_checkpoint_written": true,
+      "no_inference": true
+    },
+    {
+      "status": "profile_complete",
+      "candidate_strict_gradient_match": false,
+      "updates": 26,
+      "optimizer_states": 805,
+      "no_checkpoint_written": true,
+      "no_inference": true
+    },
+    {
+      "status": "profile_complete",
+      "candidate_strict_gradient_match": false,
+      "updates": 26,
+      "optimizer_states": 805,
+      "no_checkpoint_written": true,
+      "no_inference": true
+    }
+  ],
+  "trace": {
+    "trace_directory": "/cache/pi05-npu-20261011/profile002/trace/ascend-worker-0_2589450_20261011112557841_ascend_pt/ASCEND_PROFILER_OUTPUT",
+    "kernel_count": 25394,
+    "kernel_type_totals": [
+      {
+        "type": "hcom_allReduce_",
+        "count": 123,
+        "duration_us": 238361.33599999986
+      },
+      {
+        "type": "MatMulV2",
+        "count": 3362,
+        "duration_us": 142322.5520000002
+      },
+      {
+        "type": "Transpose",
+        "count": 1643,
+        "duration_us": 43529.744000000035
+      },
+      {
+        "type": "Mul",
+        "count": 2802,
+        "duration_us": 37908.168000000056
+      },
+      {
+        "type": "Addcdiv",
+        "count": 805,
+        "duration_us": 37650.70400000002
+      },
+      {
+        "type": "Cast",
+        "count": 5156,
+        "duration_us": 35312.92000000007
+      },
+      {
+        "type": "ForeachMulScalar",
+        "count": 36,
+        "duration_us": 21170.239999999998
+      },
+      {
+        "type": "ForeachAddcmulScalar",
+        "count": 51,
+        "duration_us": 20771.975999999995
+      },
+      {
+        "type": "ForeachLerpScalar",
+        "count": 34,
+        "duration_us": 18940.92
+      },
+      {
+        "type": "Add",
+        "count": 2840,
+        "duration_us": 18714.144000000022
+      },
+      {
+        "type": "ForeachDivScalarList",
+        "count": 17,
+        "duration_us": 11660.856000000002
+      },
+      {
+        "type": "ReduceSum",
+        "count": 786,
+        "duration_us": 10895.663999999999
+      },
+      {
+        "type": "ForeachSqrt",
+        "count": 34,
+        "duration_us": 10786.112
+      },
+      {
+        "type": "ForeachAddScalar",
+        "count": 18,
+        "duration_us": 10696.375999999997
+      },
+      {
+        "type": "Pad",
+        "count": 891,
+        "duration_us": 10004.480000000001
+      },
+      {
+        "type": "MemSet",
+        "count": 940,
+        "duration_us": 9922.695999999994
+      },
+      {
+        "type": "BatchMatMulV2",
+        "count": 180,
+        "duration_us": 9320.935999999998
+      },
+      {
+        "type": "ForeachNorm",
+        "count": 34,
+        "duration_us": 8774.952
+      },
+      {
+        "type": "Muls",
+        "count": 759,
+        "duration_us": 8330.24799999998
+      },
+      {
+        "type": "FlashAttentionScoreGrad",
+        "count": 81,
+        "duration_us": 7768.223999999999
+      },
+      {
+        "type": "LayerNormGradV3",
+        "count": 165,
+        "duration_us": 6572.967999999994
+      },
+      {
+        "type": "FlashAttentionScore",
+        "count": 162,
+        "duration_us": 6414.456
+      },
+      {
+        "type": "Gelu",
+        "count": 270,
+        "duration_us": 5712.095999999996
+      },
+      {
+        "type": "GeluGrad",
+        "count": 116,
+        "duration_us": 5268.655999999999
+      },
+      {
+        "type": "LayerNormV3",
+        "count": 330,
+        "duration_us": 5051.928000000001
+      },
+      {
+        "type": "Slice",
+        "count": 694,
+        "duration_us": 4476.696000000003
+      },
+      {
+        "type": "Pows",
+        "count": 292,
+        "duration_us": 3701.0400000000022
+      },
+      {
+        "type": "SoftmaxV2",
+        "count": 54,
+        "duration_us": 3556.0719999999988
+      },
+      {
+        "type": "ConcatD",
+        "count": 367,
+        "duration_us": 3172.400000000003
+      },
+      {
+        "type": "TensorMove",
+        "count": 325,
+        "duration_us": 3153.0000000000005
+      },
+      {
+        "type": "ReduceMean",
+        "count": 227,
+        "duration_us": 3115.720000000002
+      },
+      {
+        "type": "ZerosLike",
+        "count": 680,
+        "duration_us": 2788.6480000000142
+      },
+      {
+        "type": "Pow",
+        "count": 72,
+        "duration_us": 2514.4880000000003
+      },
+      {
+        "type": "BroadcastTo",
+        "count": 224,
+        "duration_us": 1919.6160000000007
+      },
+      {
+        "type": "SoftmaxGrad",
+        "count": 18,
+        "duration_us": 1590.16
+      },
+      {
+        "type": "Neg",
+        "count": 144,
+        "duration_us": 1247.7759999999994
+      },
+      {
+        "type": "ViewCopy",
+        "count": 72,
+        "duration_us": 1032.1600000000003
+      },
+      {
+        "type": "Cos",
+        "count": 55,
+        "duration_us": 666.448
+      },
+      {
+        "type": "Sin",
+        "count": 55,
+        "duration_us": 609.0800000000002
+      },
+      {
+        "type": "RealDiv",
+        "count": 77,
+        "duration_us": 520.6560000000001
+      },
+      {
+        "type": "TransData",
+        "count": 30,
+        "duration_us": 503.88800000000003
+      },
+      {
+        "type": "Conv2D",
+        "count": 6,
+        "duration_us": 359.752
+      },
+      {
+        "type": "AsStrided",
+        "count": 36,
+        "duration_us": 333.75999999999993
+      },
+      {
+        "type": "Rsqrt",
+        "count": 220,
+        "duration_us": 319.49599999999987
+      },
+      {
+        "type": "Pack",
+        "count": 28,
+        "duration_us": 287.7919999999999
+      },
+      {
+        "type": "Conv2DBackpropFilter",
+        "count": 3,
+        "duration_us": 172.664
+      },
+      {
+        "type": "Cumsum",
+        "count": 2,
+        "duration_us": 112.984
+      },
+      {
+        "type": "Sub",
+        "count": 14,
+        "duration_us": 105.552
+      },
+      {
+        "type": "StatelessRandomNormalV2",
+        "count": 1,
+        "duration_us": 101.56
+      },
+      {
+        "type": "GatherV2",
+        "count": 7,
+        "duration_us": 85.56
+      },
+      {
+        "type": "EmbeddingDenseGradV2",
+        "count": 4,
+        "duration_us": 80.968
+      },
+      {
+        "type": "hcom_broadcast_",
+        "count": 2,
+        "duration_us": 68.824
+      },
+      {
+        "type": "ClipByValueV2",
+        "count": 4,
+        "duration_us": 45.456
+      },
+      {
+        "type": "GridSample",
+        "count": 1,
+        "duration_us": 44.4
+      },
+      {
+        "type": "ResizeBilinearV2",
+        "count": 1,
+        "duration_us": 25.656
+      },
+      {
+        "type": "LessEqual",
+        "count": 1,
+        "duration_us": 22.48
+      },
+      {
+        "type": "SelectV2",
+        "count": 1,
+        "duration_us": 20.528
+      },
+      {
+        "type": "Sort",
+        "count": 4,
+        "duration_us": 16.8
+      },
+      {
+        "type": "LinSpace",
+        "count": 2,
+        "duration_us": 16.256
+      },
+      {
+        "type": "DSARandomUniform",
+        "count": 12,
+        "duration_us": 13.320000000000002
+      },
+      {
+        "type": "LogicalAnd",
+        "count": 1,
+        "duration_us": 9.04
+      },
+      {
+        "type": "ReduceAll",
+        "count": 4,
+        "duration_us": 6.76
+      },
+      {
+        "type": "LpNormV2",
+        "count": 1,
+        "duration_us": 6.576
+      },
+      {
+        "type": "Greater",
+        "count": 4,
+        "duration_us": 6.552
+      },
+      {
+        "type": "Swish",
+        "count": 3,
+        "duration_us": 4.119999999999999
+      },
+      {
+        "type": "Fill",
+        "count": 3,
+        "duration_us": 4.0
+      },
+      {
+        "type": "SiluGrad",
+        "count": 2,
+        "duration_us": 3.76
+      },
+      {
+        "type": "MseLossGradV2",
+        "count": 1,
+        "duration_us": 3.52
+      },
+      {
+        "type": "OnesLike",
+        "count": 2,
+        "duration_us": 3.216
+      },
+      {
+        "type": "MSELossV2",
+        "count": 1,
+        "duration_us": 2.784
+      },
+      {
+        "type": "Reciprocal",
+        "count": 1,
+        "duration_us": 1.52
+      },
+      {
+        "type": "Abs",
+        "count": 1,
+        "duration_us": 1.32
+      }
+    ],
+    "top_cpu_self_us": [
+      [
+        "MulBackward0",
+        133660.85999999996
+      ],
+      [
+        "empty_tensor",
+        131002.12999999983
+      ],
+      [
+        "PI05/backward_hccl",
+        123656.99
+      ],
+      [
+        "DistributedDataParallel.forward",
+        113142.59
+      ],
+      [
+        "AddmmBackward0",
+        80860.80999999998
+      ],
+      [
+        "aten::addmm",
+        71441.10000000002
+      ],
+      [
+        "aten::mul",
+        67989.48
+      ],
+      [
+        "aten::as_strided",
+        60504.43000000026
+      ],
+      [
+        "aten::matmul",
+        52836.95000000006
+      ],
+      [
+        "aten::view",
+        48686.45000000011
+      ],
+      [
+        "aten::transpose",
+        39327.93999999994
+      ],
+      [
+        "aten::native_layer_norm",
+        37645.520000000004
+      ],
+      [
+        "aten::copy_",
+        36496.09
+      ],
+      [
+        "aten::add",
+        30808.320000000018
+      ],
+      [
+        "npu::npu_fusion_attention",
+        29685.960000000003
+      ],
+      [
+        "autograd::engine::evaluate_function: torch::autograd::AccumulateGrad",
+        25853.910000000007
+      ],
+      [
+        "aten::t",
+        24922.12999999997
+      ],
+      [
+        "aten::linear",
+        22801.689999999988
+      ],
+      [
+        "Optimizer.step#AdamW.step",
+        21712.36
+      ],
+      [
+        "npu::npu_dtype_cast",
+        20036.019999999986
+      ],
+      [
+        "aten::slice",
+        17989.189999999973
+      ],
+      [
+        "detach",
+        16992.15000000001
+      ],
+      [
+        "aten::reshape",
+        16255.060000000036
+      ],
+      [
+        "aten::mm",
+        15625.570000000016
+      ],
+      [
+        "aten::sum",
+        15348.889999999989
+      ]
+    ],
+    "top_device_self_us": [
+      [
+        "HcclAllreduce",
+        238361.33599999986
+      ],
+      [
+        "aclnnMatmul",
+        109676.4080000001
+      ],
+      [
+        "aclnnInplaceCopy",
+        39286.56000000002
+      ],
+      [
+        "aclnnInplaceMul",
+        38514.12799999999
+      ],
+      [
+        "aclnnInplaceAddcdiv",
+        37650.70400000002
+      ],
+      [
+        "aclnnAddmm",
+        25597.056
+      ],
+      [
+        "aclnnMm",
+        23179.807999999968
+      ],
+      [
+        "aclnnForeachMulScalarV2",
+        21170.239999999998
+      ],
+      [
+        "aclnnForeachAddcmulScalarV2",
+        20771.975999999995
+      ],
+      [
+        "aclnnFlashAttentionScoreGrad",
+        19926.000000000007
+      ],
+      [
+        "aclnnMul",
+        19008.448
+      ],
+      [
+        "aclnnForeachLerpScalar",
+        18940.92
+      ],
+      [
+        "aclnnFlashAttentionScore",
+        17500.920000000002
+      ],
+      [
+        "aclnnForeachDivScalarList",
+        11660.856000000002
+      ],
+      [
+        "aclnnReduceSum",
+        11305.73599999999
+      ],
+      [
+        "aclnnForeachSqrt",
+        10786.112
+      ],
+      [
+        "aclnnAdd",
+        10748.583999999999
+      ],
+      [
+        "aclnnForeachAddScalarV2",
+        10696.375999999997
+      ],
+      [
+        "aclnnMuls",
+        10442.352000000015
+      ],
+      [
+        "aclnnForeachNorm",
+        8774.952
+      ],
+      [
+        "aclnnCat",
+        7537.2880000000005
+      ],
+      [
+        "aclnnInplaceAdd",
+        7342.103999999995
+      ],
+      [
+        "aclnnLayerNormBackward",
+        6572.967999999994
+      ],
+      [
+        "aclnnCast",
+        6222.807999999991
+      ],
+      [
+        "aclnnPowTensorScalar",
+        6215.527999999998
+      ]
+    ],
+    "step_trace_time_us": [
+      {
+        "Device_id": "0",
+        "Step": "",
+        "Computing": "540288.0159999992",
+        "Communication(Not Overlapped)": "186475.52000000223",
+        "Overlapped": "51954.63999999763",
+        "Communication": "238430.15999999986",
+        "Free": "1231501.272000003",
+        "Stage": "1958264.75",
+        "Bubble": "0",
+        "Communication(Not Overlapped and Exclude Receive)": "186475.52000000223",
+        "Preparing": "294.75"
+      }
+    ],
+    "host_scope_events": [
+      {
+        "name": "PI05/input",
+        "duration_us": 1567.55,
+        "pid": 2589450,
+        "tid": 2589450
+      },
+      {
+        "name": "PI05/forward",
+        "duration_us": 414799.07,
+        "pid": 2589450,
+        "tid": 2589450
+      },
+      {
+        "name": "PI05/backward_hccl",
+        "duration_us": 1330676.69,
+        "pid": 2589450,
+        "tid": 2589450
+      },
+      {
+        "name": "PI05/clip",
+        "duration_us": 35098.24,
+        "pid": 2589450,
+        "tid": 2589450
+      },
+      {
+        "name": "PI05/optimizer",
+        "duration_us": 72330.12,
+        "pid": 2589450,
+        "tid": 2589450
+      }
+    ],
+    "communication_files": [
+      "/cache/pi05-npu-20261011/profile002/trace/ascend-worker-0_2589450_20261011112557841_ascend_pt/ASCEND_PROFILER_OUTPUT/communication.json",
+      "/cache/pi05-npu-20261011/profile002/trace/ascend-worker-0_2589450_20261011112557841_ascend_pt/ASCEND_PROFILER_OUTPUT/communication_matrix.json"
+    ],
+    "warnings": [
+      "Profiler stop while RECORD warning; capture completeness not guaranteed",
+      "Two incomplete memory records",
+      "Single rank0 capture; overhead excluded from benchmark; kernel sum is not wall time"
+    ]
+  },
+  "npu_smi_after": "+------------------------------------------------------------------------------------------------+\n| npu-smi 24.1.0.3                 Version: 24.1.0.3                                             |\n+---------------------------+---------------+----------------------------------------------------+\n| NPU   Name                | Health        | Power(W)    Temp(C)           Hugepages-Usage(page)|\n| Chip                      | Bus-Id        | AICore(%)   Memory-Usage(MB)  HBM-Usage(MB)        |\n+===========================+===============+====================================================+\n| 0     910B1               | OK            | 92.2        49                0    / 0             |\n| 0                         | 0000:C1:00.0  | 0           0    / 0          3422 / 65536         |\n+===========================+===============+====================================================+\n| 1     910B1               | OK            | 99.4        51                0    / 0             |\n| 0                         | 0000:01:00.0  | 0           0    / 0          3403 / 65536         |\n+===========================+===============+====================================================+\n| 2     910B1               | OK            | 96.4        51                0    / 0             |\n| 0                         | 0000:C2:00.0  | 0           0    / 0          3403 / 65536         |\n+===========================+===============+====================================================+\n| 3     910B1               | OK            | 101.0       52                0    / 0             |\n| 0                         | 0000:02:00.0  | 0           0    / 0          3407 / 65536         |\n+===========================+===============+====================================================+\n| 4     910B1               | OK            | 95.1        50                0    / 0             |\n| 0                         | 0000:81:00.0  | 0           0    / 0          3404 / 65536         |\n+===========================+===============+====================================================+\n| 5     910B1               | OK            | 98.1        51                0    / 0             |\n| 0                         | 0000:41:00.0  | 0           0    / 0          3402 / 65536         |\n+===========================+===============+====================================================+\n| 6     910B1               | OK            | 96.7        50                0    / 0             |\n| 0                         | 0000:82:00.0  | 0           0    / 0          3403 / 65536         |\n+===========================+===============+====================================================+\n| 7     910B1               | OK            | 96.6        51                0    / 0             |\n| 0                         | 0000:42:00.0  | 0           0    / 0          3402 / 65536         |\n+===========================+===============+====================================================+\n+---------------------------+---------------+----------------------------------------------------+\n| NPU     Chip              | Process id    | Process name             | Process memory(MB)      |\n+===========================+===============+====================================================+\n| No running processes found in NPU 0                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 1                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 2                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 3                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 4                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 5                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 6                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 7                                                            |\n+===========================+===============+====================================================+\n",
+  "limitations": [
+    "Short cached-data benchmark, not full DataLoader/video decoding or long-run convergence",
+    "Sequential timing blocks use continuing weights; fixed-state numerical comparisons are separate",
+    "Candidate failed strict gradient sample match; baseline repeat also differs; not promoted",
+    "Single-rank profiler capture has stop-state and two incomplete memory-record warnings",
+    "Profiler overhead excluded; trace durations are not steady-state wall-time fractions"
+  ]
+}

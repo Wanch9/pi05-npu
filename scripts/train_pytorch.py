@@ -42,6 +42,7 @@ import wandb
 
 import openpi.models.pi0_config
 import openpi.models_pytorch.pi0_pytorch
+from openpi.models_pytorch.device import accelerator, backend, local_device
 import openpi.shared.normalize as _normalize
 import openpi.training.config as _config
 import openpi.training.data_loader as _data
@@ -94,18 +95,15 @@ def init_wandb(config: _config.TrainConfig, *, resuming: bool, enabled: bool = T
 def setup_ddp():
     world_size = int(os.environ.get("WORLD_SIZE", "1"))
     use_ddp = world_size > 1
+    device = local_device()
     if use_ddp and not torch.distributed.is_initialized():
-        backend = "nccl" if torch.cuda.is_available() else "gloo"
-        torch.distributed.init_process_group(backend=backend, init_method="env://")
+        torch.distributed.init_process_group(backend=backend(device), init_method="env://")
 
         # Set up debugging environment variables for DDP issues
         if os.environ.get("TORCH_DISTRIBUTED_DEBUG") is None:
             os.environ["TORCH_DISTRIBUTED_DEBUG"] = "INFO"
 
     local_rank = int(os.environ.get("LOCAL_RANK", os.environ.get("RANK", "0")))
-    device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
-    if torch.cuda.is_available():
-        torch.cuda.set_device(device)
     return use_ddp, local_rank, device
 
 
@@ -118,8 +116,15 @@ def cleanup_ddp():
 def set_seed(seed: int, local_rank: int):
     torch.manual_seed(seed + local_rank)
     np.random.seed(seed + local_rank)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed + local_rank)
+    acc = accelerator(local_device())
+    if acc is not None:
+        acc.manual_seed_all(seed + local_rank)
+
+
+def empty_device_cache(device):
+    acc = accelerator(device)
+    if acc is not None:
+        acc.empty_cache()
 
 
 def build_datasets(config: _config.TrainConfig):
@@ -209,8 +214,8 @@ def load_checkpoint(model, optimizer, checkpoint_dir, device):
     ckpt_dir = checkpoint_dir / f"{latest_step}"
 
     # Clear memory before loading checkpoints
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+    if accelerator(device) is not None:
+        empty_device_cache(device)
         gc.collect()
         log_memory_usage(device, latest_step, "before_loading_checkpoint")
 
@@ -221,12 +226,14 @@ def load_checkpoint(model, optimizer, checkpoint_dir, device):
 
         if safetensors_path.exists():
             model_to_load = model.module if isinstance(model, torch.nn.parallel.DistributedDataParallel) else model
-            safetensors.torch.load_model(model_to_load, safetensors_path, device=str(device))
+            # safetensors 0.5.x does not accept private-use device names.
+            load_device = "cpu" if device.type == "npu" else str(device)
+            safetensors.torch.load_model(model_to_load, safetensors_path, device=load_device)
             logging.info("Loaded model state from safetensors format")
         else:
             raise FileNotFoundError(f"No model checkpoint found at {ckpt_dir}")
 
-        torch.cuda.empty_cache()
+        empty_device_cache(device)
         gc.collect()
         log_memory_usage(device, latest_step, "after_loading_model")
 
@@ -242,7 +249,7 @@ def load_checkpoint(model, optimizer, checkpoint_dir, device):
 
         optimizer.load_state_dict(optimizer_state_dict)
         del optimizer_state_dict
-        torch.cuda.empty_cache()
+        empty_device_cache(device)
         gc.collect()
         log_memory_usage(device, latest_step, "after_loading_optimizer")
 
@@ -251,7 +258,7 @@ def load_checkpoint(model, optimizer, checkpoint_dir, device):
         metadata = torch.load(ckpt_dir / "metadata.pt", map_location=device, weights_only=False)
         global_step = metadata.get("global_step", latest_step)
         del metadata
-        torch.cuda.empty_cache()
+        empty_device_cache(device)
         gc.collect()
         log_memory_usage(device, latest_step, "after_loading_metadata")
 
@@ -261,7 +268,7 @@ def load_checkpoint(model, optimizer, checkpoint_dir, device):
     except RuntimeError as e:
         if "out of memory" in str(e):
             # Clear memory and provide detailed error message
-            torch.cuda.empty_cache()
+            empty_device_cache(device)
             gc.collect()
             logging.error(f"Out of memory error while loading checkpoint: {e!s}")
             log_memory_usage(device, latest_step, "after_oom_error")
@@ -283,16 +290,16 @@ def get_latest_checkpoint_step(checkpoint_dir):
 
 def log_memory_usage(device, step, phase="unknown"):
     """Log detailed memory usage information."""
-    if not torch.cuda.is_available():
+    if accelerator(device) is None:
         return
 
-    memory_allocated = torch.cuda.memory_allocated(device) / 1e9
-    memory_reserved = torch.cuda.memory_reserved(device) / 1e9
-    memory_free = torch.cuda.memory_reserved(device) - torch.cuda.memory_allocated(device)
+    memory_allocated = accelerator(device).memory_allocated(device) / 1e9
+    memory_reserved = accelerator(device).memory_reserved(device) / 1e9
+    memory_free = accelerator(device).memory_reserved(device) - accelerator(device).memory_allocated(device)
     memory_free = memory_free / 1e9
 
     # Get more detailed memory info
-    memory_stats = torch.cuda.memory_stats(device)
+    memory_stats = accelerator(device).memory_stats(device)
     max_memory_allocated = memory_stats.get("allocated_bytes.all.peak", 0) / 1e9
     max_memory_reserved = memory_stats.get("reserved_bytes.all.peak", 0) / 1e9
 
@@ -385,8 +392,8 @@ def train_loop(config: _config.TrainConfig):
         del sample_batch, observation, actions, images_to_log, img_concatenated
         del sample_data_loader  # Also delete the sample data loader
         gc.collect()
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+        if accelerator(device) is not None:
+            empty_device_cache(device)
         logging.info("Cleared sample batch and data loader from memory")
 
     # Build model
@@ -417,11 +424,11 @@ def train_loop(config: _config.TrainConfig):
         logging.info("Gradient checkpointing is not supported for this model")
 
     # Log initial memory usage after model creation
-    if is_main and torch.cuda.is_available():
+    if is_main and accelerator(device) is not None:
         log_memory_usage(device, 0, "after_model_creation")
 
     # Enable memory optimizations for large-scale training
-    if world_size >= 8:
+    if world_size >= 8 and device.type == "cuda":
         torch.backends.cudnn.benchmark = True
         torch.backends.cuda.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
@@ -432,7 +439,7 @@ def train_loop(config: _config.TrainConfig):
     if use_ddp:
         model = torch.nn.parallel.DistributedDataParallel(
             model,
-            device_ids=[device.index] if device.type == "cuda" else None,
+            device_ids=[device.index] if device.type in {"cuda", "npu"} else None,
             find_unused_parameters=True,  # Disable for memory efficiency
             gradient_as_bucket_view=True,  # Enable for memory efficiency
             static_graph=world_size >= 8,  # Enable for 8+ GPUs
@@ -539,7 +546,7 @@ def train_loop(config: _config.TrainConfig):
             loss.backward()
 
             # Log memory usage after backward pass
-            if global_step < 5 and is_main and torch.cuda.is_available():
+            if global_step < 5 and is_main and accelerator(device) is not None:
                 log_memory_usage(device, global_step, "after_backward")
 
             # Gradient clipping

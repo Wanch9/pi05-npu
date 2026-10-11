@@ -37,14 +37,12 @@ import numpy as np
 import orbax.checkpoint as ocp
 import safetensors
 import torch
-import tyro
 
 import openpi.models.gemma
 import openpi.models.model
 import openpi.models.pi0_config
 import openpi.models_pytorch.pi0_pytorch
 from openpi.training import utils
-import openpi.training.config as _config
 
 
 def slice_paligemma_state_dict(state_dict, config):
@@ -571,6 +569,8 @@ def main(
         precision: Precision for model conversion
         inspect_only: Only inspect parameter keys, don't convert
     """
+    import openpi.training.config as _config
+
     model_config = _config.get_config(config_name).model
     if not isinstance(model_config, openpi.models.pi0_config.Pi0Config):
         raise ValueError(f"Config {config_name} is not a Pi0Config")
@@ -584,4 +584,6 @@ def main(
 
 
 if __name__ == "__main__":
+    import tyro
+
     tyro.cli(main)

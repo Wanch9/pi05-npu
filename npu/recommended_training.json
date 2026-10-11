@@ -1,0 +1,44 @@
+{
+  "model": "pi05 base full trainable model",
+  "cards": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "global_batch": 4,
+  "microbatch_per_rank": 1,
+  "dataset": "existing libero-eight-v2 samples.pt; no download",
+  "precision": "unchanged selected BF16 plus FP32 stability parameters",
+  "environment": {
+    "HCCL_DETERMINISTIC": "true"
+  },
+  "checkpoint_policy": "omit only whole Gemma stack wrapper; retain per-layer and image checkpoints",
+  "optimizer": {
+    "class": "torch.optim.AdamW",
+    "fused": null,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "eps": 1e-08,
+    "weight_decay": 1e-10,
+    "schedule": "original warmup and peak LR 5e-5"
+  },
+  "DDP": {
+    "backend": "hccl",
+    "bucket_cap_mb": 25,
+    "find_unused_parameters": true,
+    "gradient_as_bucket_view": true
+  },
+  "implementation": "npu/optimize_training.py: layer_only and layer25 variant",
+  "status": "validated in bounded experimental training process; original training CLI defaults unchanged",
+  "median_step_seconds": 1.1714848801493645,
+  "step_time_reduction_fraction": 0.1014740909512073,
+  "checkpoint_full_gradient_strict_match": true,
+  "experimental_not_default": [
+    "torch.optim.AdamW fused=True",
+    "bucket_cap_mb=50",
+    "bucket_cap_mb=100"
+  ]
+}

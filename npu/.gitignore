@@ -1,0 +1,5 @@
+assets/
+wheels/
+*.tar.gz
+*.tar
+__pycache__/

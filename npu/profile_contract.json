@@ -1,0 +1,39 @@
+{
+  "scope": "bounded training profiling only",
+  "cards": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "world_size": 4,
+  "global_batch": 4,
+  "batch_per_rank": 1,
+  "precision": "existing selected BF16, FP32 stability parameters, no autocast",
+  "dataset": "existing libero-eight-v2; repeated windows from eight episodes",
+  "model": "full pi05 base, all parameters trainable",
+  "script_sha256": "f66ce67a0b8283d13b07750e51b93e4a26e99b0c8b47f47e7dedaf6ce240c959",
+  "updates": 26,
+  "optimizer": "unchanged AdamW and original warmup schedule",
+  "baseline": "unmodified model; normal training without expensive acceptance scans",
+  "candidate": "omit whole Gemma stack checkpoint; retain per-layer and image checkpointing",
+  "correctness": "same weights, sample and full RNG restoration; loss, 64 gradient values per used parameter tensor and all per-tensor gradient norms",
+  "measurement": "3 warmup + 5 measured steps for baseline/candidate; baseline repeat 1+3; audit cost measured separately; synchronized phase breakdowns separate from end-to-end medians",
+  "profiler": "rank0 CPU+NPU Level1 one warmed step; profiler overhead excluded from benchmark",
+  "checkpoint_save": false,
+  "inference": false,
+  "run": "/home/ma-user/pi05-npu-20261011/profile002",
+  "output": "/cache/pi05-npu-20261011/profile002",
+  "status": "profile_complete",
+  "prior_attempt": {
+    "run": "profile001",
+    "exit_code": 1,
+    "cause": "strict sampled-gradient check failed before timing; same loss, max abs 1.52587890625e-5, relative L2 0.000492834"
+  },
+  "comparison_revision": "warm DDP before fixed-state comparisons; include baseline-repeat and per-parameter diagnostics; do not loosen tolerance; candidate timing is experimental if strict check fails",
+  "exit_code": 0,
+  "candidate_promoted": false,
+  "candidate_numerical_status": "strict gradient sample check failed; baseline-repeat also differs; pending numerical investigation",
+  "summary": "npu/profile_summary.json",
+  "evidence": "npu/evidence/profile002.json"
+}
