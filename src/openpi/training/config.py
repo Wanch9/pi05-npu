@@ -485,6 +485,10 @@ class TrainConfig:
     # Precision for PyTorch training.
     pytorch_training_precision: Literal["bfloat16", "float32"] = "bfloat16"
 
+    # PI0.5 NPU training: deterministic HCCL and omit only the whole-stack
+    # checkpoint wrapper, retaining layer/vision checkpoints and standard AdamW.
+    pytorch_npu_training_optimization: bool = False
+
     lr_schedule: _optimizer.LRScheduleConfig = dataclasses.field(default_factory=_optimizer.CosineDecaySchedule)
     optimizer: _optimizer.OptimizerConfig = dataclasses.field(default_factory=_optimizer.AdamW)
     ema_decay: float | None = 0.99

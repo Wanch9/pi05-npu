@@ -42,7 +42,7 @@ import wandb
 
 import openpi.models.pi0_config
 import openpi.models_pytorch.pi0_pytorch
-from openpi.models_pytorch.device import accelerator, backend, local_device
+from openpi.models_pytorch.device import accelerator, local_device, setup_ddp
 import openpi.shared.normalize as _normalize
 import openpi.training.config as _config
 import openpi.training.data_loader as _data
@@ -90,21 +90,6 @@ def init_wandb(config: _config.TrainConfig, *, resuming: bool, enabled: bool = T
             project=config.project_name,
         )
         (ckpt_dir / "wandb_id.txt").write_text(wandb.run.id)
-
-
-def setup_ddp():
-    world_size = int(os.environ.get("WORLD_SIZE", "1"))
-    use_ddp = world_size > 1
-    device = local_device()
-    if use_ddp and not torch.distributed.is_initialized():
-        torch.distributed.init_process_group(backend=backend(device), init_method="env://")
-
-        # Set up debugging environment variables for DDP issues
-        if os.environ.get("TORCH_DISTRIBUTED_DEBUG") is None:
-            os.environ["TORCH_DISTRIBUTED_DEBUG"] = "INFO"
-
-    local_rank = int(os.environ.get("LOCAL_RANK", os.environ.get("RANK", "0")))
-    return use_ddp, local_rank, device
 
 
 def cleanup_ddp():
@@ -314,7 +299,9 @@ def log_memory_usage(device, step, phase="unknown"):
 
 
 def train_loop(config: _config.TrainConfig):
-    use_ddp, local_rank, device = setup_ddp()
+    if config.pytorch_npu_training_optimization and not getattr(config.model, "pi05", False):
+        raise ValueError("--pytorch-npu-training-optimization is validated for pi0.5 models only")
+    use_ddp, local_rank, device = setup_ddp(npu_training_optimization=config.pytorch_npu_training_optimization)
     is_main = (not use_ddp) or (dist.get_rank() == 0)
     set_seed(config.seed, local_rank)
 
@@ -417,7 +404,7 @@ def train_loop(config: _config.TrainConfig):
 
     if hasattr(model, "gradient_checkpointing_enable"):
         enable_gradient_checkpointing = True
-        model.gradient_checkpointing_enable()
+        model.gradient_checkpointing_enable(checkpoint_whole_stack=not config.pytorch_npu_training_optimization)
         logging.info("Enabled gradient checkpointing for memory optimization")
     else:
         enable_gradient_checkpointing = False
@@ -442,6 +429,7 @@ def train_loop(config: _config.TrainConfig):
             device_ids=[device.index] if device.type in {"cuda", "npu"} else None,
             find_unused_parameters=True,  # Disable for memory efficiency
             gradient_as_bucket_view=True,  # Enable for memory efficiency
+            bucket_cap_mb=25,
             static_graph=world_size >= 8,  # Enable for 8+ GPUs
         )
 
@@ -469,6 +457,11 @@ def train_loop(config: _config.TrainConfig):
         eps=config.optimizer.eps,
         weight_decay=config.optimizer.weight_decay,
     )
+    if config.pytorch_npu_training_optimization:
+        logging.info(
+            "NPU training optimization enabled: HCCL_DETERMINISTIC=true, "
+            "whole-stack checkpoint off, layer/vision checkpoints on, standard AdamW, DDP bucket=25 MiB"
+        )
 
     # Load checkpoint if resuming
     global_step = 0

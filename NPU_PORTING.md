@@ -1,5 +1,7 @@
 # π0.5 四卡 NPU 适配
 
+当前常规训练入口已增加 `--pytorch-npu-training-optimization`，显式启用已验证的重计算策略。下文实验记录中的“原始 CLI 未改写”描述的是当时状态；接入说明和新增回归见文末及 README。
+
 本目录基于 Physical Intelligence 官方 OpenPI，固定源码提交为
 `215abfb217dbac7d5f1273282331b9b1866c0479`。
 本轮目标是完整模型的全参数微调通过性验证，不是长训练或 LIBERO 成功率评估。
@@ -267,3 +269,25 @@ python -m torch.distributed.run --standalone --nproc_per_node=4 \
   /home/ma-user/pi05-npu-20261011/optimize-training-v3.py \
   --mode all --output /cache/pi05-npu-20261011/NEW_UNIQUE_RUN
 ```
+
+## 常规训练入口接入
+
+`TrainConfig.pytorch_npu_training_optimization` 默认关闭。对 π0.5 的常规
+`scripts/train_pytorch.py` 命令增加 `--pytorch-npu-training-optimization` 后：
+
+1. 使用共享 `device.setup_ddp`，在 NPU/HCCL 初始化前设置 `HCCL_DETERMINISTIC=true`。
+2. 调用模型原生 `gradient_checkpointing_enable(checkpoint_whole_stack=False)`，仅绕过整段 Gemma 的外层 checkpoint；逐层、视觉和其他原有 wrapper 保持原状。
+3. 显式使用 25 MiB DDP 桶、原标准 AdamW，不开启 fused 或大桶。
+4. 非 NPU、非 π0.5、冲突的确定性环境变量或过早初始化会报错。关闭开关保持原路径，恢复训练时需继续传入相同选择。
+
+模型 state_dict 的参数名与 optimizer 格式不变。常规入口具体命令见 README。
+历史实验脚本保留原进程内 wrapper，便于与本次原生模型实现对照。
+
+新增 `npu/test_training_optimization.py` 检查初始化顺序及回退行为；
+`npu/check_training_optimization.py` 在四卡完整模型、原 8 个缓存窗口上对比
+历史实验 wrapper 与新模型开关的全部有效梯度，再用标准 AdamW 做一次真实更新。
+该更新使用 peak LR=5e-5 验证有效参数变化，不是新一轮 warmup 吞吐基准。
+这项回归共用常规入口的 DDP 初始化与模型 API，但不等价于执行完整 LeRobot/W&B 数据链路，
+也不验证常规入口的新 checkpoint 保存恢复。相关缺口仍保留，不挪用之前有界脚本的验收结论。
+
+新增回归 `entry001` 真实退出码 **0**：四卡各完成一次真实更新，全部 805 个有效梯度张量、3,248,572,176 个元素通过相同严格阈值，新开关对历史实验实现的梯度最大绝对差为 **9.31323e-10**。每卡 805 组优化器状态的两个动量均有限，动作输出投影测得实际参数变化。本机和目标运行时的 6 项单元回归均通过；结束后四卡无运行进程。原始按 rank 指标、实际执行源码哈希及退出记录见 [training_entry_validation.json](npu/training_entry_validation.json)。

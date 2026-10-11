@@ -119,6 +119,7 @@ class PI0Pytorch(nn.Module):
 
         # Initialize gradient checkpointing flag
         self.gradient_checkpointing_enabled = False
+        self.checkpoint_whole_stack = True
 
         msg = "transformers_replace is not installed correctly. Please install it with `uv pip install transformers==4.53.2` and `cp -r ./src/openpi/models_pytorch/transformers_replace/* .venv/lib/python3.11/site-packages/transformers/`."
         try:
@@ -129,14 +130,15 @@ class PI0Pytorch(nn.Module):
         except ImportError:
             raise ValueError(msg) from None
 
-    def gradient_checkpointing_enable(self):
+    def gradient_checkpointing_enable(self, *, checkpoint_whole_stack: bool = True):
         """Enable gradient checkpointing for memory optimization."""
         self.gradient_checkpointing_enabled = True
+        self.checkpoint_whole_stack = checkpoint_whole_stack
         self.paligemma_with_expert.paligemma.language_model.gradient_checkpointing = True
         self.paligemma_with_expert.paligemma.vision_tower.gradient_checkpointing = True
         self.paligemma_with_expert.gemma_expert.model.gradient_checkpointing = True
 
-        logging.info("Enabled gradient checkpointing for PI0Pytorch model")
+        logging.info("Enabled gradient checkpointing; whole-stack wrapper=%s", checkpoint_whole_stack)
 
     def gradient_checkpointing_disable(self):
         """Disable gradient checkpointing."""
@@ -363,9 +365,14 @@ class PI0Pytorch(nn.Module):
             )
             return suffix_out
 
-        suffix_out = self._apply_checkpoint(
-            forward_func, prefix_embs, suffix_embs, att_2d_masks_4d, position_ids, adarms_cond
-        )
+        if self.checkpoint_whole_stack:
+            suffix_out = self._apply_checkpoint(
+                forward_func, prefix_embs, suffix_embs, att_2d_masks_4d, position_ids, adarms_cond
+            )
+        else:
+            # Gemma layers still checkpoint internally; omit only the redundant
+            # whole-stack wrapper, exactly as in the validated layer25 experiment.
+            suffix_out = forward_func(prefix_embs, suffix_embs, att_2d_masks_4d, position_ids, adarms_cond)
 
         suffix_out = suffix_out[:, -self.config.action_horizon :]
         suffix_out = suffix_out.to(dtype=torch.float32)

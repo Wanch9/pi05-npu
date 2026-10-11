@@ -56,7 +56,28 @@
 
 固定权重、输入和各 rank RNG，覆盖 **805 个张量、3,248,572,176 个有效梯度元素**：减少重计算与原始路径的最大绝对差 **1.3970e-9**、相对 L2 **1.6750e-8**，四卡通过原有 `atol=1e-7, rtol=1e-5`，未放宽阈值。这是严格容差内一致，不是逐位相同。
 
-推荐组合：**确定性 HCCL + 仅移除 Gemma 整段外层 checkpoint + 标准 AdamW + 25 MiB 桶**。实现位于实验脚本的 `layer_only` / `layer25`；[推荐配置 JSON](npu/recommended_training.json) 是描述文件，不会被原始 CLI 自动读取。**原始训练 CLI 默认行为未改为加速配置。**
+推荐组合：**确定性 HCCL + 仅移除 Gemma 整段外层 checkpoint + 标准 AdamW + 25 MiB 桶**。已通过 `--pytorch-npu-training-optimization` 接入常规 `scripts/train_pytorch.py`；模型原生支持 `gradient_checkpointing_enable(checkpoint_whole_stack=False)`。实验脚本保留 `layer_only` / `layer25` 作为历史对照。[推荐配置 JSON](npu/recommended_training.json) 是说明文件，不会自动加载。开关默认关闭，显式开启后生效。
+
+### 在常规训练入口启用
+
+准备好常规训练需要的 LeRobot 数据、对应 norm stats、tokenizer 及 CLI 依赖后，在原有训练命令上增加 `--pytorch-npu-training-optimization`。例如四卡、global batch=4 的两步有界运行：
+
+```bash
+source .venv/bin/activate
+source npu/environment.sh
+python -m torch.distributed.run --standalone --nproc_per_node=4 \
+  scripts/train_pytorch.py pi05_libero \
+  --exp-name pi05_npu_optimized_001 \
+  --pytorch-weight-path /path/to/converted-pi05-weights \
+  --batch-size 4 --num-train-steps 2 --num-workers 0 \
+  --no-wandb-enabled --pytorch-npu-training-optimization
+```
+
+`pi05_libero` 的默认数据 repo 是 `physical-intelligence/libero`；请在配置中或通过 `--data.repo-id` 指定自己的本地 LeRobot 资产对应 repo，并准备该配置要求的归一化统计。上面的命令不把 `samples.pt` 当作 LeRobot 数据集；小样本缓存回归使用文末独立脚本。平台 overlay 依赖列表用于有界验证，常规 CLI 还需要上游的 tyro、wandb、LeRobot 等依赖；安装时保留现有 torch/torch_npu/CANN。
+
+开关会在 NPU/HCCL 初始化前设置 `HCCL_DETERMINISTIC=true`，显式使用 25 MiB DDP 桶，保留标准 AdamW。冲突的 HCCL 环境值、已初始化的设备/进程组、非 NPU 或非 π0.5 模型会明确报错。启动日志会打印实际优化策略，W&B 配置包含该参数。恢复运行时继续传同一开关；它不改变模型参数名或优化器格式。删除开关或使用 `--no-pytorch-npu-training-optimization` 可回到原始 checkpoint 路径。
+
+常规入口数据链路的端到端吞吐和保存恢复需要在对应环境另行验收；前述 10.15% 是相同模型策略在缓存小样本实验中的历史测量，不是新 CLI 运行的保证值。
 
 ### 融合优化器与大桶的边界
 
@@ -128,8 +149,9 @@ python -m torch.distributed.run --standalone --nproc_per_node=4 \
 - [NPU_PORTING.md](NPU_PORTING.md)：完整适配记录、首轮 profile、失败诊断、最终优化结果。
 - [validation_summary.json](npu/validation_summary.json)：训练、保存恢复、推理和视觉数值对照。
 - [optimization_summary.json](npu/optimization_summary.json)：逐步计时及数值比较；[evidence](npu/evidence) 保留脱敏后的原始回执和失败记录。
+- `python -m unittest npu.test_training_optimization -v`：CPU 可运行的初始化顺序与回退检查；`npu/check_training_optimization.py`：四卡完整模型的新开关对历史实验实现的梯度/真实更新回归，接收 `--weights`、`--data`、`--output`。
 - `python npu/summarize_optimization.py` / `python npu/summarize_profile.py`：在 CPU 上从随仓库历史证据重建汇总，不启动训练。
 - [PUBLICATION.md](npu/PUBLICATION.md)：原始运行哈希与发布修订的区别；[publication_manifest.json](npu/publication_manifest.json) 记录发布文件哈希。
 - [NPU 适配 skill](https://github.com/Wanch9/ascend-npu-porting)：通用方法和 π0.5 案例。
 
-未验证：完整 DataLoader/视频解码吞吐、长程收敛、LIBERO 仿真成功率、完整 CUDA 梯度对照、fused 优化器全状态恢复，以及其他硬件/卡数。原始保存恢复验收使用基线路径；加速路径完成数值对照和短程真实更新，未另做加速路径 checkpoint 恢复验收。发布时只调整路径参数与文档并做本地检查，未重新占用 NPU 跑训练。历史 `/cache` 产物不等于持久备份，本轮没有配置 OBS 输出备份。
+未验证：完整 DataLoader/视频解码吞吐、长程收敛、LIBERO 仿真成功率、完整 CUDA 梯度对照、fused 优化器全状态恢复，以及其他硬件/卡数。原始保存恢复验收使用基线路径；加速路径完成数值对照和短程真实更新，未另做加速路径 checkpoint 恢复验收。首次发布仅调整路径参数；后续常规入口接入另做四卡缓存样本回归，见 NPU_PORTING.md。历史加速比例未作为新 CLI 的测速结果。历史 `/cache` 产物不等于持久备份，本轮没有配置 OBS 输出备份。

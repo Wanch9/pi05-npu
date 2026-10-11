@@ -31,11 +31,12 @@
     "npu/evidence/optimization001.json": "a351437ab136ae705a678a1389bea83103e47e838931cef5612b87b07d092509"
   },
   "release_sha256": {
-    "NPU_PORTING.md": "a606ea00beaf3ed415e6af70e9648c4f0d9119d344cbc4d9998f2dff304361a3",
-    "README.md": "436f53dc1e325eca127b3e10fb4ae1c9ce47d2873cf5e8eae8dbad3f7e53aa9c",
+    "NPU_PORTING.md": "eff7d2eacdc2f97518401b7b970bc2e91ed5976c3949fc7ddbeea32a8a9f90db",
+    "README.md": "33ceac49f3e747c4c7994ff39f56fcc852497449f3c0b3ee845779b604c43fd8",
     "npu/.gitignore": "581be59058a62879d00617bff4062eb8cfbc1f6ce51cc8eff5bf1389f43e263a",
-    "npu/PUBLICATION.md": "28ed2d45a04a145601a64062b5e75900effebbe14d7ab72c95e9f2ee6c64ba49",
+    "npu/PUBLICATION.md": "3510b0804f9832c602ce76d6e83c21b3d75d02b9be4dfe3f8c7aa8254da7e8c9",
     "npu/SOURCE_MANIFEST.json": "dde75a91d0a300fec27d2bdc9fceea82779831892a43ed527100ca7ddf940517",
+    "npu/check_training_optimization.py": "7aeee9187be0f3440aedd71b0d081aa6249e0043deb97a83af4e8bef1a416606",
     "npu/contract.json": "b0254164568f3ffe7f5ecd94495729e386ec7faa5a5d3a007098e1e4e324eb86",
     "npu/convert_base.py": "ab98e2d5b70fe58f903c004fa0063fa8fc4a13351b0888ded2d13a8c0d6801b4",
     "npu/environment.sh": "ccf73a7f1639d30df0a0030351dc7bcfd44836fa4971ecadf2f6ae79f0c15541",
@@ -52,13 +53,19 @@
     "npu/profile_contract.json": "be26cd059c79199a8d9ba68356203a9f5b3ce7305cdef63a1943c44b59832b8f",
     "npu/profile_summary.json": "c54a65bb1e659d24437f2d41d6e45aeb1c56f1efce880293759dab0ebb2a00c9",
     "npu/profile_training.py": "3b40b9f57fec6062e38a602b1aeb65c62081fd9be381d95b666144412beacf93",
-    "npu/recommended_training.json": "2725ffe7d7c887e7a49af4dd6a746435b492d1dffa4a8f47e44eedc4c27b0409",
+    "npu/recommended_training.json": "25921dd1fbc88b40f3f9382bf853c0ff7cf35c4afdd5007e435ec873dfdf4a03",
     "npu/requirements-overlay.txt": "8e106e2619ccb5f5d5f101fac0a7238a0946a4917ef6dc1eff9ea8063e614cb2",
     "npu/run_recorded.py": "0162d38f6ccf202ffe040cc4905291b61c99c11f626c0f7e2fe85ade14623a18",
     "npu/summarize_optimization.py": "f0cd2ffba74cecd11ba20dae1ae82ffdce335b248ba1ad82b1349315ec91ae8a",
     "npu/summarize_profile.py": "7a6b287326f10ee8969c352abd68b391c31bbd15d0466c70ac812b5e5bf96385",
+    "npu/test_training_optimization.py": "da554b105e74a27be57e7fe557b399974fbfcabe89eaf428e5f87044ba25f235",
+    "npu/training_entry_validation.json": "6c9eaefceab8f3d57413adb8c8e7c7100777fa023513b5d3b9908bd5abb66280",
     "npu/validate_four_cards.py": "c0dcc57e07b85803d35cf854757885a0ea69b139f1cbbdf7d1d11cb1e63080c7",
-    "npu/validation_summary.json": "25b75f5e76688b2d36f2e6011f3e687c2a46dc00e55fac2a0fcc588551551843"
+    "npu/validation_summary.json": "25b75f5e76688b2d36f2e6011f3e687c2a46dc00e55fac2a0fcc588551551843",
+    "scripts/train_pytorch.py": "d20b466d4bcc28d1e3504d16bfda855a146814588a1340448eecb9df4958aef2",
+    "src/openpi/models_pytorch/device.py": "04bafe418feab2157f3953148b5906217564e7084013a64381ebe4380061f0d9",
+    "src/openpi/models_pytorch/pi0_pytorch.py": "6be9db79db46e84424f609e34220dbbb4e4b3cbdf47dcc750f04311639cb3c24",
+    "src/openpi/training/config.py": "6d9121fc2c8a6cd04bcb5ede0a8fc9b0cdd18437945bda43efcefef5f7d2e3b9"
   },
   "checks": [
     "Python syntax",
@@ -69,5 +76,6 @@
     "overlay installer copy and refusal guards",
     "publication identifier/credential scan",
     "historical summary reconstruction"
-  ]
+  ],
+  "integration_validation": "npu/training_entry_validation.json"
 }

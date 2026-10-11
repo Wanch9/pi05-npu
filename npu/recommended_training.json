@@ -31,8 +31,8 @@
     "find_unused_parameters": true,
     "gradient_as_bucket_view": true
   },
-  "implementation": "npu/optimize_training.py: layer_only and layer25 variant",
-  "status": "validated in bounded experimental training process; original training CLI defaults unchanged",
+  "implementation": "scripts/train_pytorch.py --pytorch-npu-training-optimization; PI0Pytorch.gradient_checkpointing_enable(checkpoint_whole_stack=False)",
+  "status": "explicit opt-in integrated into regular PyTorch trainer; historical timing from bounded cached-data experiments",
   "median_step_seconds": 1.1714848801493645,
   "step_time_reduction_fraction": 0.1014740909512073,
   "checkpoint_full_gradient_strict_match": true,
@@ -40,5 +40,8 @@
     "torch.optim.AdamW fused=True",
     "bucket_cap_mb=50",
     "bucket_cap_mb=100"
-  ]
+  ],
+  "training_config": {
+    "pytorch_npu_training_optimization": true
+  }
 }

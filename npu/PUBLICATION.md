@@ -16,6 +16,11 @@ removes the fixed venv from `environment.sh`, and makes the dataset source label
 configurable. These packaging changes have local syntax/structural checks; the
 published revision has not been rerun on NPU. The model/optimizer math is unchanged.
 
+The initial publication statement above describes the first upload. Subsequent
+regular-entry integration adds an explicit training flag and a native whole-stack
+checkpoint switch. See README.md and NPU_PORTING.md for its separate regression
+scope; historical experiment hashes and results are not rewritten as new runs.
+
 The upstream README (with trailing whitespace removed) is in `README_UPSTREAM.md`. Upstream Git history,
 LICENSE and submodule references are retained. Existing upstream GitHub workflows
 are manual-only because their CI environment is not the measured NPU environment.
